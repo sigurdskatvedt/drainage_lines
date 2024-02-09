@@ -10,7 +10,7 @@ app = QgsApplication([], False)
 app.initQgis()
 
 # Add the path to Processing framework
-sys.path.append('/Applications/QGIS.app/Contents/Resources/python/plugins')
+sys.path.append('/Applications/QGIS.app/Contents/Resources/python/plugins/processing')
 
 # Import and initialize Processing framework
 import processing

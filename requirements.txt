@@ -1,0 +1,5 @@
+# Requirements for qgis_drainage.py
+# Add Python packages that are not part of the standard QGIS installation
+# Example:
+# pandas==1.2.3
+# numpy==1.19.5

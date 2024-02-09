@@ -1,0 +1,14 @@
+version: '3.8'  # or whichever version you're using
+
+services:
+  python-script:
+    image: qgis:latest
+    build:
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./app:/app  # Mount the local directory to /app in the container
+      - ./data:/data
+

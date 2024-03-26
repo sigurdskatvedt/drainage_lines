@@ -3,6 +3,7 @@ version: '3.8'  # or whichever version you're using
 services:
   python-script:
     image: qgis:latest
+    container_name: drainage_lines
     build:
       dockerfile: Dockerfile
     restart: unless-stopped

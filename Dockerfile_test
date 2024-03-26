@@ -1,0 +1,51 @@
+# Use an official QGIS image as the base
+FROM qgis/qgis
+
+# Set the maintainer information (optional)
+LABEL maintainer="Carlos H Brandt <carloshenriquebrandt@gmail.com>"
+
+# Version of Saga-GIS in Git repository (i.e., 'git tag')
+ARG SGG_GIT_VERSION='release-9-3-1'
+
+# Set environment variables
+ENV DEBIAN_FRONTEND=noninteractive \
+    QGIS_PREFIX_PATH=/usr \
+    QT_QPA_PLATFORM=offscreen \
+    XDG_RUNTIME_DIR=/tmp/runtime-root
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Install necessary libraries and tools for SAGA GIS and Python dependencies
+RUN apt-get update && apt-get install -qy \
+    ibwxgtk3.0-gtk3-dev libtiff5-dev libgdal-dev libproj-dev \
+    libexpat1-dev wx-common libogdi-dev unixodbc-dev g++ make automake libtool git \
+    python3-pip \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Clone and build SAGA GIS from source
+RUN _TMPDIR=$(mktemp -d) && cd $_TMPDIR \
+    && git clone git://git.code.sf.net/p/saga-gis/code saga-gis-code \
+    && cd saga-gis-code/saga-gis/ \
+    && git checkout $SGG_GIT_VERSION \
+    && autoreconf -fi \
+    && ./configure \
+    && make -j$(nproc) \
+    && make install \
+    && ldconfig \
+    && cd \
+    && rm -rf $_TMPDIR
+
+# Copy the requirements file and other necessary files into the container at /app
+COPY requirements.txt .env /app/
+# Copy the current directory contents into the container at /app
+COPY . /app
+
+# Install any necessary Python dependencies from requirements.txt
+RUN pip3 install --upgrade pip \
+    && pip3 install --no-cache-dir -r requirements.txt
+
+# Keep the container running
+CMD ["tail", "-f", "/dev/null"]
+

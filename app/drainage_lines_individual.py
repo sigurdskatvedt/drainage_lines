@@ -15,7 +15,7 @@ from tasks.accumulation_task import AccumulationTask
 from tasks.load_layer_task import LoadLayerTask
 from tasks.create_mosaic_task import CreateMosaicTask, ClipMosaicByVectorTask
 from tasks.depression_fill_task import DepressionFillTask
-from tasks.catchment_task import AccumulationTask
+from tasks.accumulation_task import AccumulationTask
 import logging
 from qgis.core import QgsApplication, QgsVectorLayer, QgsVectorFileWriter, QgsProject, QgsVectorFileWriter, QgsProcessingFeedback, QgsFeatureRequest, QgsFeature, QgsMessageLog, QgsTaskManager, QgsTask, QgsCoordinateReferenceSystem, QgsProviderRegistry
 from dual_logger import log  # Make sure dual_logger.py is accessible
@@ -28,6 +28,14 @@ qgs.initQgis()
 # Initialize QGIS and Processing framework
 Processing.initialize()
 feedback = QgsProcessingFeedback()
+
+
+def write_file_paths(file_path, output_file):
+    raster_files = [os.path.join(file_path, f)
+                    for f in os.listdir(file_path) if f.endswith('.tif')]
+    with open(output_file, 'w') as file:
+        for file_path in raster_files:
+            file.write(file_path + '\n')
 
 
 def write_log_message(message, tag, level):
@@ -66,9 +74,9 @@ def main():
     # Create the load layer tasks
     catchment_layer_name = "REGINEenhet"
 
-    catchment_polygon_task = LoadLayerTask("Loading catchment data", catchment_layer_name,
-                                           '../data/regine_enhet/NVEData/Nedborfelt_RegineEnhet.gml')
-    catchment_polygon_task.layerLoaded.connect(addLayerToStorage)
+    # Load catchment layer directly
+    catchment_layer_path = '../data/regine_enhet/NVEData/Nedborfelt_RegineEnhet.gml'
+    catchment_layer = QgsVectorLayer(catchment_layer_path, "Catchment Layer", "ogr")
 
     municipality_layer_name = "Kommune"
     municipality_polygon_task = LoadLayerTask("Loading municipality polygon", municipality_layer_name,
@@ -81,38 +89,38 @@ def main():
         "Find Touching Polygons", touching_layer_name, catchment_layer_name, municipality_layer_name)
     touching_task.layerLoaded.connect(addLayerToStorage)
 
-    raster_files = [os.path.join("../data/dtm1/dtm1/data/", f)
-                    for f in os.listdir("../data/dtm1/dtm1/data/") if f.endswith('.tif')]
+    raster_path = "../data/dtm1/dtm1/data/"
+    
 
     complete_mosaic_path = "../data/dtm1/dtm1/clipped2/mosaic.tif"
     clipped_mosaic_path = "../data/dtm1/dtm1/clipped2/mosaic_clipped.tif"
 
+    file_txt_path = os.path.join("../data/dtm1/dtm1/data/", "grid_paths.txt")
+    write_file_paths(raster_path, file_txt_path)
+
     create_mosaic_task = CreateMosaicTask("Create Mosaic of raster files",
-                                          raster_files, complete_mosaic_path)
+                                          file_txt_path, complete_mosaic_path)
 
-    clip_mosaic_task = ClipMosaicByVectorTask("Clip mosaic by vector polygon",
-                                              complete_mosaic_path, touching_layer_name, clipped_mosaic_path)
+    QgsApplication.taskManager().addTask(create_mosaic_task)
 
-    water_layer_name = "Elv"
-    water_task = LoadLayerTask("Test open layer task", water_layer_name,
-                               "../data/vann/Basisdata_3238_Nannestad_5972_FKB-Vann_GML.gml")
-
-    # Add load layer tasks as subtasks to the find touching polygons task
-    # Note: Adjust the addSubTask method according to your task class implementation
-    touching_task.addSubTask(catchment_polygon_task, [], QgsTask.ParentDependsOnSubTask)
-    touching_task.addSubTask(municipality_polygon_task, [], QgsTask.ParentDependsOnSubTask)
-    clip_mosaic_task.addSubTask(create_mosaic_task, [], QgsTask.ParentDependsOnSubTask)
-
-    depression_filled_path = "../data/dtm1/dtm1/clipped2/depression_filled.tif"
-    accumulation_path = "../data/dtm1/dtm1/clipped2/accumulation.tif"
-    catchment_task = AccumulationTask("Catchment layer task", depression_filled_path, 2, accumulation_path)
-
-    # # Now add the main task to the task manager, which includes its subtasks
-    # QgsApplication.taskManager().addTask(touching_task)
+    # for feature in catchment_layer.getFeatures():
+    #     catchment_id = feature['vassdragsnummer'].replace(".", "_")
+    #     geom = feature.geometry()
+    #     log(type(geom))
     #
-    # QgsApplication.taskManager().addTask(clip_mosaic_task)
-
-    QgsApplication.taskManager().addTask(catchment_task)
+    #     catchment_path = f"../data/dtm1/dtm1/catchment_layers/catchment_{catchment_id}.tif"
+    #     accumulation_path = f"../data/dtm1/dtm1/catchment_layers/accumulation_{catchment_id}.tif"
+    #     method = 2
+    #
+    #     clip_task = ClipMosaicByVectorTask(
+    #         f"Clipping feature to {catchment_path}.", complete_mosaic_path, feature, catchment_path)
+    #
+    #     accumulation_task = AccumulationTask(
+    #         f"Accumulation to {accumulation_path}", catchment_path, method, accumulation_path)
+    #
+    #
+    #     log(f"Starting {catchment_id}")
+    #     QgsApplication.taskManager().addTask(clip_task)
 
     # Setup the event loop to wait for tasks to finish
     loop = QEventLoop()

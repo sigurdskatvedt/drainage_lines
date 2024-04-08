@@ -1,0 +1,7 @@
+{
+  "raster_data_folder": "../data/ringsaker/hoyde/",
+  "complete_mosaic_path": "../data/ringsaker/hoyde/mosaic.tif",
+  "area_file_path": "../data/ringsaker/valgt.gml",
+  "clipped_mosaic_path": "../data/ringsaker/hoyde/mosaic_clipped.tif"
+}
+

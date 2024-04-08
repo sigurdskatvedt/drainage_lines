@@ -32,6 +32,7 @@ class ClassifyFlowTask(BaseTask):
                 'TABLE': classif,
                 'NO_DATA': -9999,  # Specify the no data value if needed
                 'RANGE_BOUNDARIES': 0,  # 0 = min < value <= max, 1 = min <= value < max
+                'OPTIONS': 'COMPRESS=LZW',  # Add compression option here
                 'OUTPUT': self.classified_layer
             }
             feedback = QgsProcessingFeedback()

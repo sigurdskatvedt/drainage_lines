@@ -10,7 +10,13 @@ from .base_task import BaseTask
 from variables import saving_folder
 
 
-
+def create_file_list(raster_files):
+    # Create a temporary file to store the list of raster paths
+    temp_file_path = 'raster_file_list.txt'  # Consider using a temporary file path
+    with open(temp_file_path, 'w') as file_list:
+        for file_path in raster_files:
+            file_list.write(f"{file_path}\n")
+    return temp_file_path
 
 class CreateMosaicTask(BaseTask):
     def __init__(self, description, raster_files, mosaic_output_path):
@@ -27,13 +33,16 @@ class CreateMosaicTask(BaseTask):
         self.progress_bar.update(progress)
 
     def task(self):
+        log(self.raster_files)
+        file_list_path = create_file_list(self.raster_files)
+
         params = {
-            'FILE_LIST': self.raster_files,
-            'TARGET_OUT_GRID': self.mosaic_output_path,
+                'INPUT': self.raster_files,
+                'OUTPUT': self.mosaic_output_path,
         }
         try:
             log(f"Starting merging of mosaic. Saving to {self.mosaic_output_path}")
-            result = processing.run("sagang:mosaicking", params, feedback=self.feedback)
+            result = processing.run("gdal:merge", params, feedback=self.feedback)
             if result and os.path.exists(self.mosaic_output_path):
                 log(f"\nMosaic created successfully. Output saved to: {self.mosaic_output_path}", level=logging.INFO)
                 return True
@@ -41,7 +50,6 @@ class CreateMosaicTask(BaseTask):
         except Exception as e:
             log(f"Failed to create mosaic: {e}", level=logging.ERROR)  # Ensure exceptions are logged
             return False
-
 
 class ClipMosaicByVectorTask(BaseTask):
     def __init__(self, description, mosaic_path, vector_layer, clipped_output_path):
@@ -62,12 +70,13 @@ class ClipMosaicByVectorTask(BaseTask):
         params = {
             'INPUT': self.mosaic_path,
             'MASK': self.vector_layer,
+            'MULTITHREADING': True,
             'NODATA': None,
             'OUTPUT': self.clipped_output_path
         }
 
         try:
-            result = processing.run("sagang:cliprasterwithpolygon", params, feedback=self.feedback)
+            result = processing.run("gdal:cliprasterbymasklayer", params, feedback=self.feedback)
             if result and os.path.exists(self.clipped_output_path):
                 log(f"Mosaic clipped successfully. Output saved to: {self.clipped_output_path}", level=logging.INFO)
                 return True

@@ -1,0 +1,12 @@
+../data/ringsaker/hoyde/dtm1_33_124_123.tif
+../data/ringsaker/hoyde/dtm1_33_124_122.tif
+../data/ringsaker/hoyde/dtm1_33_125_125.tif
+../data/ringsaker/hoyde/dtm1_33_124_121.tif
+../data/ringsaker/hoyde/dtm1_33_125_124.tif
+../data/ringsaker/hoyde/dtm1_33_125_120.tif
+../data/ringsaker/hoyde/dtm1_33_124_124.tif
+../data/ringsaker/hoyde/dtm1_33_125_121.tif
+../data/ringsaker/hoyde/dtm1_33_125_123.tif
+../data/ringsaker/hoyde/dtm1_33_125_122.tif
+../data/ringsaker/hoyde/dtm1_33_123_122.tif
+../data/ringsaker/hoyde/dtm1_33_123_123.tif

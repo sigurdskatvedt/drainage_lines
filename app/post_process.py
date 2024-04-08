@@ -31,7 +31,7 @@ def main():
     project.clear()  # Clear any existing project data
 
     classify_task = ClassifyFlowTask("Classifying flow accumulation raster",
-                                     "../data/dtm1/dtm1/clipped2/flow_d8.tif", "../data/dtm1/dtm1/clipped2/classified_d8.tif", "../data/dtm1/dtm1/clipped2/classification_rules.csv")
+                                     "../data/ringsaker/hoyde/flow_d8.tif", "../data/ringsaker/hoyde/classified_d8.tif", "../data/classification_rules.csv")
 
     QgsApplication.taskManager().addTask(classify_task)
 

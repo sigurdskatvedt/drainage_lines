@@ -9,7 +9,7 @@ class BaseTask(QgsTask):
 
     def __init__(self, description, layer_name=None):
         super().__init__(description, QgsTask.CanCancel)
-        self.layer_output_name = layer_name
+        self.output_name = layer_name
         self.exception = None
         self.output = None
 
@@ -28,14 +28,14 @@ class BaseTask(QgsTask):
             # Check if the output is a string (path) or a QgsMapLayer
             if isinstance(self.output, str):
                 # Assuming it's a vector layer; adjust if it could be a raster
-                layer = QgsVectorLayer(self.output, self.layer_output_name, "ogr")
+                layer = QgsVectorLayer(self.output, self.output_name, "ogr")
                 if not layer.isValid():
                     log(f"Failed to load layer from path: {self.output}", level=logging.ERROR)
                     return
             else:
                 # If self.output is already a QgsMapLayer, just set its name
                 layer = self.output
-                layer.setName(self.layer_output_name)
+                layer.setName(self.output_name)
                 if not layer.isValid():
                     # Handle invalid layer
                     return False

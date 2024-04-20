@@ -1,6 +1,0 @@
-../data/dtm1/dtm1/data/dtm1_33_125_118.tif
-../data/dtm1/dtm1/data/dtm1_33_124_118.tif
-../data/dtm1/dtm1/data/dtm1_33_124_116.tif
-../data/dtm1/dtm1/data/dtm1_33_124_117.tif
-../data/dtm1/dtm1/data/dtm1_33_125_116.tif
-../data/dtm1/dtm1/data/dtm1_33_125_117.tif

@@ -41,7 +41,7 @@ class FindTouchingPolygonsTask(BaseTask):
             'METHOD': 1,
             'DISCARD_NONMATCHING': True,
             'PREFIX': '',
-            'OUTPUT': f'{saving_folder}{self.layer_output_name}.gml'
+            'OUTPUT': f'{saving_folder}{self.output_name}.gml'
         }
         feedback = QgsProcessingFeedback()
         try:

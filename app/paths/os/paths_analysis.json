@@ -1,0 +1,13 @@
+{
+  "complete_mosaic_path": "../data/dtm1/dtm1/clipped2/mosaic.tif",
+  "building_raster_path": "../data/output/building_raster.tif",
+  "clipped_mosaic_path": "../data/os/filled_new.tif",
+  "dtm_with_buildings_path": "../data/output/dtm_with_buildings.tif",
+  "reprojected_path": "../data/os/reprojected.tif",
+  "depression_filled_path": "../data/dtm1/dtm1/clipped2/depression_filled.tif",
+  "accumulation_path": "../data/dtm1/dtm1/clipped2/accumulation.tif",
+  "saving_dir": "../data/output/",
+  "water_and_culverts_path": "../data/output/water_and_culverts.gml",
+  "culverts_path": "../data/output/culverts.gml",
+  "water_clipped": "../data/output/water_clipped.tif"
+}

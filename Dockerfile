@@ -8,9 +8,6 @@ WORKDIR /app
 COPY requirements.txt /app/
 COPY .env /app/.env
 
-
-
-
 # Remove the existing SAGA GIS version
 RUN apt-get update && apt-get remove -y saga
 
@@ -48,7 +45,7 @@ RUN pip install --upgrade pip \
 ENV QGIS_PREFIX_PATH=/usr \
     QT_QPA_PLATFORM=offscreen \
     XDG_RUNTIME_DIR=/tmp/runtime-root \
-    LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH}
+    LD_LIBRARY_PATH=/usr/lib/grass78/lib:/usr/local/lib:${LD_LIBRARY_PATH}
 
 # Keep the container running
 CMD ["tail", "-f", "/dev/null"]

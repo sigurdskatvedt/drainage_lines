@@ -1,5 +1,5 @@
 from qgis.analysis import QgsNativeAlgorithms
-import processing
+from qgis import processing
 from processing.tools import dataobjects
 import csv
 import os

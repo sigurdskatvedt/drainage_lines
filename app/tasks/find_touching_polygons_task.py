@@ -1,9 +1,16 @@
 from qgis.core import QgsProcessingFeedback, QgsProject
-import processing
 from .base_task import BaseTask
 from dual_logger import log
-from variables import saving_folder
 import logging
+
+import sys
+# Add the path to Processing framework
+sys.path.append('/usr/share/qgis/python/plugins/')
+
+# Import processing after initializing QGIS application
+from qgis import processing
+from processing.core.Processing import Processing
+from processing.algs.gdal.GdalAlgorithmProvider import GdalAlgorithmProvider, GdalUtils
 
 
 class FindTouchingPolygonsTask(BaseTask):
@@ -15,14 +22,13 @@ class FindTouchingPolygonsTask(BaseTask):
 
     def task(self):
         project = QgsProject.instance()
-        mapLayers = project.mapLayers().values()
-        print("Maplayers: ", mapLayers)
+        map_layers = project.mapLayers().values()
 
         primary_layer = None
         touching_layer = None
 
         # Search for the layers by name
-        for layer in mapLayers:
+        for layer in map_layers:
             if layer.name() == self.primary_layer_name:
                 primary_layer = layer
             elif layer.name() == self.touching_layer_name:
@@ -41,12 +47,14 @@ class FindTouchingPolygonsTask(BaseTask):
             'METHOD': 1,
             'DISCARD_NONMATCHING': True,
             'PREFIX': '',
-            'OUTPUT': f'{saving_folder}{self.output_name}.gml'
+            'OUTPUT': 'memory:'
         }
         feedback = QgsProcessingFeedback()
         try:
             result = processing.run("native:joinattributesbylocation", params, feedback=feedback)
-            self.output = result['OUTPUT']
+            output = result['OUTPUT']
+            output.setName(self.touching_layer_name)
+            QgsProject.instance().addMapLayer(output)
             log(f'Completed task "{self.description()}", joined {result["JOINED_COUNT"]} features', level=logging.INFO)
             return True
         except Exception as e:

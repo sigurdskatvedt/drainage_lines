@@ -41,7 +41,6 @@ class RasterizeVectorTask(BaseTask):
 
 
         try:
-
             rasters = []
             for name in self.layer_names:
                 layer_path = f"{self.gml_path}|layername={name}"
@@ -52,6 +51,8 @@ class RasterizeVectorTask(BaseTask):
                 
                 temp_raster_path = os.path.join(tempdir, f"{name}_raster.tif")
 
+                log(reference_raster_layer.width())
+                log(reference_raster_layer.height())
                 params = {
                     'INPUT': layer,
                     'BURN': self.height,
@@ -61,7 +62,7 @@ class RasterizeVectorTask(BaseTask):
                     'EXTENT': reference_raster_layer.extent(),
                     'INIT': 0,
                     'OPTIONS': '',
-                    'DATA_TYPE': 0,  # Byte
+                    'DATA_TYPE': 5,
                     'OUTPUT': temp_raster_path
                 }
 

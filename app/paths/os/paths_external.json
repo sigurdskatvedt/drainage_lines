@@ -1,11 +1,11 @@
 {
-  "catchment_layer_path": "../data/regine_omrade.geojson",
-  "municipality_layer_path": "../data/kommune/Basisdata_3238_Nannestad_25832_Kommuner_GML.gml",
+  "catchment_layer_path": "../data/Nedborfelt_RegineEnhet.geojson",
+  "municipality_layer_path": "../data/Basisdata_34_Innlandet_25832_Kommuner_GeoJSON.geojson",
   "water_layer_path": "../data/Basisdata_3430_Os_5972_FKB-Vann_GML.gml",
   "building_layer_path": "../data/Basisdata_3430_Os_5972_FKB-Bygning_GML.gml",
   "building_polygon_name": "AnnenBygning",
   "building_point_name": "Bygning",
-  "raster_data_folder": "../data/dtm1/dtm1/data/",
+  "raster_data_folder": "../data/hoyde",
   "road_culvert_path": "../data/stikkrenner_kurve.gml",
   "road_culvert_name": "StikkrenneKulvert_79_KURVE",
   "construction_layer_path": "../data/Basisdata_3430_Os_5972_FKB-BygnAnlegg_GML.gml"

@@ -2,7 +2,6 @@ version: '3.8'  # or whichever version you're using
 
 services:
   python-script:
-    image: qgis:latest
     container_name: drainage_lines
     build:
       dockerfile: Dockerfile
@@ -12,4 +11,3 @@ services:
     volumes:
       - ./app:/app  # Mount the local directory to /app in the container
       - ./data:/data
-

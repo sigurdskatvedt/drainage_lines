@@ -1,6 +1,5 @@
 import os
 from qgis.core import QgsProcessingFeedback, QgsVectorLayer
-import processing
 from dual_logger import log  # Ensure dual_logger.py is accessible from this script
 import logging
 

@@ -42,9 +42,8 @@ class ClassifyFlowTask(BaseTask):
             if self.classified_layer:
                 log(f'Task "{self.description}" completed successfully.', level=logging.INFO)
                 return True
-            else:
-                log(f'Task "{self.description}" encountered an error during classification.', level=logging.ERROR)
-                return False
+            log(f'Task "{self.description}" encountered an error during classification.', level=logging.ERROR)
+            return False
         except Exception as e:
             self.exception = e
             log(f'Task "{self.description}" failed: {e}', level=logging.ERROR)

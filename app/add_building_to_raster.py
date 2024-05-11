@@ -1,15 +1,11 @@
-import csv
-from PyQt5.QtCore import QEventLoop
-import os
 import json
 import sys
 import cProfile
 import pstats
+from PyQt5.QtCore import QEventLoop
 from tasks.rasterize_vector_task import RasterizeVectorTask
 from tasks.add_rasters_task import AddRastersTask
-import logging
-from qgis.core import QgsApplication, QgsVectorLayer, QgsVectorFileWriter, QgsProject, QgsVectorFileWriter, QgsProcessingFeedback, QgsFeatureRequest, QgsFeature, QgsMessageLog, QgsTaskManager, QgsTask, QgsCoordinateReferenceSystem, QgsProviderRegistry
-from qgis.analysis import QgsNativeAlgorithms
+from qgis.core import QgsApplication, QgsProject, QgsProcessingFeedback, QgsTask
 from dual_logger import log  # Make sure dual_logger.py is accessible
 
 # Initialize the QGIS Application
@@ -20,21 +16,13 @@ qgs.initQgis()
 # Add the path to Processing framework
 sys.path.append('/usr/share/qgis/python/plugins/')
 
-# Import processing after initializing QGIS application
-from qgis import processing
 from processing.core.Processing import Processing
-from processing.algs.gdal.GdalAlgorithmProvider import GdalAlgorithmProvider, GdalUtils
+
 Processing.initialize()
-
-
-# # Register algorithms
-# QgsApplication.processingRegistry().addProvider(QgsNativeAlgorithms())
-#
-# # Check if GDAL provider is loaded, if not, load it
-# QgsApplication.processingRegistry().addProvider(GdalAlgorithmProvider())
 
 # Initialize QGIS and Processing framework
 feedback = QgsProcessingFeedback()
+
 
 def load_paths_from_config(config_path):
     with open(config_path, 'r') as config_file:
@@ -42,7 +30,8 @@ def load_paths_from_config(config_path):
 
 
 # Load the configuration
-config = load_paths_from_config('paths/paths.json')
+config_external = load_paths_from_config('paths/os/paths_external.json')
+config_analysis = load_paths_from_config('paths/os/paths_analysis.json')
 
 
 def main():
@@ -50,20 +39,25 @@ def main():
     project = QgsProject.instance()
     project.clear()  # Clear any existing project data
 
-    vector_layer_path = config['building_layer_path']
-    building_polygon_layer = config['building_polygon_name']
-    building_point_layer = config['building_point_name']
-    reference_raster_path = config['reprojected_path']
-    raster_output_path = config['building_raster_path']
-    dtm_with_buildings_path = config['dtm_with_buildings_path']
+    vector_layer_path = config_external['building_layer_path']
+    building_polygon_layer = config_external['building_polygon_name']
+    building_point_layer = config_external['building_point_name']
+    reference_raster_path = config_analysis['reprojected_path']
+    raster_output_path = config_analysis['building_raster_path']
+    dtm_with_buildings_path = config_analysis['dtm_with_buildings_path']
     height = 10
-    vectorize_buildings_task = RasterizeVectorTask(f"Giving all buildings height {height} meters and making raster", vector_layer_path, [building_polygon_layer, building_point_layer], reference_raster_path, raster_output_path, height)
+    vectorize_buildings_task = RasterizeVectorTask(
+        f"Giving all buildings height {height} meters and making raster",
+        vector_layer_path, [building_polygon_layer, building_point_layer],
+        reference_raster_path, raster_output_path, height)
 
-    add_rasters_task = AddRastersTask(f"Adding layers {reference_raster_path} and {raster_output_path}", reference_raster_path, raster_output_path, dtm_with_buildings_path)
+    add_rasters_task = AddRastersTask(
+        f"Adding layers {reference_raster_path} and {raster_output_path}",
+        reference_raster_path, raster_output_path, dtm_with_buildings_path)
 
-    add_rasters_task.addSubTask(vectorize_buildings_task, [], QgsTask.ParentDependsOnSubTask)
+    add_rasters_task.addSubTask(vectorize_buildings_task, [],
+                                QgsTask.ParentDependsOnSubTask)
     QgsApplication.taskManager().addTask(add_rasters_task)
-
 
     # Setup the event loop to wait for tasks to finish
     loop = QEventLoop()
@@ -75,5 +69,6 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
-
+    cProfile.run('main()', 'profile_output.txt')
+    p = pstats.Stats('profile_output.txt')
+    p.sort_stats('cumulative').print_stats(10)

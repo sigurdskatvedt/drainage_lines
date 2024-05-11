@@ -26,35 +26,31 @@ class DepressionFillTask(BaseTask):
 
     def task(self):
         raster_layer = QgsRasterLayer(self.input_dem, "Input DEM", "gdal")
-        print(raster_layer)
 
         if not raster_layer.isValid():
             log("Failed to load the DEM layer. Please check the path.", level=logging.ERROR)
             return False
-        else:
-            log("DEM layer loaded successfully.", level=logging.INFO)
-            # Implement further processing here
+
+        log("DEM layer loaded successfully.", level=logging.INFO)
+        # Implement further processing here
 
 
-            params = {
-                'ELEV': raster_layer,
-                'MINSLOPE': 0.1,
-                'FDIR': 'NULL',
-                'FILLED': self.filled_dem_output_path,
-                'WSHED': 'NULL'
-            }
+        params = {
+            'ELEV': raster_layer,
+            'MINSLOPE': 0.1,
+            'FDIR': 'NULL',
+            'FILLED': self.filled_dem_output_path,
+            'WSHED': 'NULL'
+        }
 
 
-            try:
-                log("Starting depression filling.")
-                result = processing.run("sagang:fillsinksxxlwangliu", params)
-                if result and os.path.exists(self.filled_dem_output_path):
-                    log(
-                        f"\nDepression filled DEM created successfully. Output saved to: {self.filled_dem_output_path}", level=logging.INFO)
-                    return True
-                else:
-                    raise Exception("Error during depression filling.")
-            except Exception as e:
-                self.exception = e
-                return False
-
+        try:
+            log("Starting depression filling.")
+            result = processing.run("sagang:fillsinksxxlwangliu", params)
+            if result and os.path.exists(self.filled_dem_output_path):
+                log(
+                    f"\nDepression filled DEM created successfully. Output saved to: {self.filled_dem_output_path}", level=logging.INFO)
+                return True
+        except Exception as e:
+            log(e)
+            return False

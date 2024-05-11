@@ -2,6 +2,7 @@ from qgis.core import QgsTask, QgsProject, QgsVectorLayer, QgsVectorFileWriter
 from dual_logger import log  # Make sure dual_logger.py is accessible
 import logging
 from PyQt5.QtCore import pyqtSignal
+import sys
 
 
 class BaseTask(QgsTask):

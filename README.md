@@ -43,5 +43,9 @@ saga_cmd ta_preprocessor 0 -ELEVATION [/path/to/dem] -FILLED [/path/to/output]
 
 ## Analysis and Recommendations
 
+The workflow is approximately this:
+
+![Analysis workflow](diagrams/preprocessing.png)
+
 Follow the steps in the scripts provided in the /scripts directory to perform the analysis. Ensure to document each step and its output for qualitative analysis.
 

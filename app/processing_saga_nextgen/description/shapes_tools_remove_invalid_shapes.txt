@@ -1,3 +1,0 @@
-Remove Invalid Shapes|27
-shapes_tools
-QgsProcessingParameterFeatureSource|SHAPES|Shapes|-1|None|False

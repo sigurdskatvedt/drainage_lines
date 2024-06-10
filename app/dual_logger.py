@@ -6,11 +6,11 @@ from datetime import datetime
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-#NOTE: Doesn't work because of multicore processing
 last_print_was_progress = False
 
-# New ProgressBar class
+
 class ProgressBar:
+
     def __init__(self, description, total=100):
         self.description = description
         self.total = total
@@ -29,7 +29,8 @@ class ProgressBar:
             self.description,
             "#" * block + "-" * (bar_length - block),
             round(progress * 100, 2),
-            str(elapsed_time).split('.')[0]  # Show elapsed time without microseconds
+            str(elapsed_time).split('.')[
+                0]  # Show elapsed time without microseconds
         )
         sys.stdout.write(text)
         sys.stdout.flush()
@@ -37,15 +38,20 @@ class ProgressBar:
 
     def finish(self):
         self.update(self.total)
-        print()  # Move to the next line
-        self.last_print_was_progress = False  # Reset the flag when the progress bar finishes
+        print()
+        self.last_print_was_progress = False
 
-# Existing log function
+    def change_description(self, new_description):
+        """Update the description of the progress bar."""
+        self.description = new_description
+        self.update(0)
+
+
 def log(message, level=logging.INFO, tag="DrainageLines"):
     global last_print_was_progress
     if last_print_was_progress:
         message = "\n" + message
-        last_print_was_progress = False  # Reset the flag after printing the log message
+        last_print_was_progress = False
 
     # Log to Python's logging system
     if level == logging.DEBUG:
@@ -71,4 +77,3 @@ def log(message, level=logging.INFO, tag="DrainageLines"):
     except Exception as e:
         # Fallback if QGIS logging fails (e.g., running outside QGIS)
         logger.debug(f"Failed to log message to QGIS: {e}")
-

@@ -6,11 +6,12 @@ from dual_logger import log
 
 class MergeVectorLayersTask(BaseTask):
 
-    def __init__(self, description, output_name, layer_names):
+    def __init__(self, description, output_name, layer_names, crs):
         super().__init__(description, output_name)
         self.layer_names = layer_names if isinstance(
             layer_names, list) and len(layer_names) >= 2 else None
         self.output_name = output_name
+        self.crs = crs
         self.merged_layer = None
 
     def task(self):
@@ -34,8 +35,7 @@ class MergeVectorLayersTask(BaseTask):
 
         params = {
             'LAYERS': layers_to_merge,
-            'CRS':
-            layers_to_merge[0].crs(),  # Assuming all layers share the same CRS
+            'CRS': self.crs,
             'OUTPUT': 'memory:'
         }
         feedback = QgsProcessingFeedback()

@@ -1,3 +1,0 @@
-Import Atlas Boundary File|8
-io_shapes
-QgsProcessingParameterFile|FILE|File|QgsProcessingParameterFile.File|None|False

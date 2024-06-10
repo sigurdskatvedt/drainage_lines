@@ -1,9 +1,13 @@
 {
   "complete_mosaic_path": "../data/output/raster/complete_mosaic.tif",
   "building_raster_path": "../data/output/raster/building_raster.tif",
-  "clipped_mosaic_path": "../data/output/raster/clipped_mosaic.tif",
+  "clipped_mosaic_path": "../data/output/raster/smaller_cut.tif",
+  "dissolved_buffered_path": "path/to/dissolved_buffered.shp",
   "dtm_with_buildings_path": "../data/output/raster/dtm_buildings.tif",
-  "reprojected_path": "../data/output/raster/reprojected.tif",
+  "depressions": "../data/output/raster/depressions.tif",
+  "depressions_no_zero": "../data/output/raster/depressions_no_zero.tif",
+  "depressions_vector": "../data/output/vector/depressions.gml",
+  "smaller_cut": "../data/output/raster/smaller_cut.tif",
   "depression_filled_path": "../data/output/depression_filled.tif",
   "accumulation_path": "../data/output/accumulation.tif",
   "water_culverts_path": "../data/output/vector/water_and_culverts.gml",
@@ -14,5 +18,7 @@
   "raster_culvert_path": "../data/output/raster/raster_culvert.tif",
   "water_clipped": "../data/output/water_clipped.tif",
   "dtm_buildings_culverts_path": "../data/output/raster/dtm_buildings_culverts.tif",
-  "dtm_buildings_culverts_water_path": "../data/output/raster/dtm_buildings_culverts_water.tif"
+  "dtm_buildings_culverts_water_path": "../data/output/raster/dtm_buildings_culverts_water.tif",
+  "dtm_original": "../data/output/raster/dtm_buildings_culverts.tif",
+  "dtm_filled": "../data/output/raster/dtm_buildings_culverts_filled.tif"
 }

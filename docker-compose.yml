@@ -1,5 +1,3 @@
-version: '3.8'  # or whichever version you're using
-
 services:
   python-script:
     container_name: drainage_lines

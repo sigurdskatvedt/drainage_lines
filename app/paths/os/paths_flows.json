@@ -1,0 +1,9 @@
+{
+  "flow": "/data/output/raster/flow_mfdmd_dtm_buildings_sub10_filled.tif",
+  "flow_classified": "/data/output/raster/temp/classified.tif",
+  "flow_classified_integer": "/data/output/raster/temp/classified_integer.tif",
+  "flow_classified_thinned": "/data/output/raster/temp/classified_thinned.tif",
+  "flow_channels_raw": "/data/output/vector/temp/channels_raw.gml",
+  "flow_channels_simplified": "/data/output/vector/temp/channels_simple.gml",
+  "flow_channels": "/data/output/vector/channels_flow_mfdmd_dtm_buildings_sub10_filledgml"
+}

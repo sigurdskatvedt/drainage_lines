@@ -1,8 +1,8 @@
 from qgis.core import QgsProject, QgsVectorLayer
-import processing
 from .base_task import BaseTask
 from dual_logger import log
 import logging
+from qgis import processing
 
 
 class SaveLayerToFileTask(BaseTask):

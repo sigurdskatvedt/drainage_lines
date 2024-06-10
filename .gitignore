@@ -141,4 +141,5 @@ Temporary Items
 
 /data
 /qgis
-app/WBT
+/WBT
+/whitebox-tools

@@ -1,4 +1,0 @@
-Import WRF Geogrid Binary Format|13
-io_grid
-QgsProcessingParameterRasterDestination|GRIDS|Grids|None|False
-QgsProcessingParameterFile|FILE|File|QgsProcessingParameterFile.File|None|False

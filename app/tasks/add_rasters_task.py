@@ -3,6 +3,7 @@ from dual_logger import log, ProgressBar
 import logging
 import os
 from datetime import datetime
+from qgis.core import QgsApplication
 from .base_task import BaseTask
 
 import processing
@@ -32,12 +33,19 @@ class AddRastersTask(BaseTask):
 
         try:
             # Calculate the sum of both rasters
+            # Construct the base expression
             expression = f'"{raster1_layer.name()}@1" + "{raster2_layer.name()}@1"'
+
+            # Construct the final expression with corrected syntax
+            final_expression = f'(({expression} > 0) * ({expression})) / (({expression} > 0) * 1 + ({expression} <= 0) * 0)'
+
+            log(final_expression)
             params = {
                 'LAYERS': [raster1_layer, raster2_layer],
-                'EXPRESSION': expression,
+                'EXPRESSION': final_expression,
                 'OUTPUT': self.raster_output_path
             }
+
 
             result = processing.run("native:rastercalc", params, feedback=self.feedback)
             if result and os.path.exists(self.raster_output_path):

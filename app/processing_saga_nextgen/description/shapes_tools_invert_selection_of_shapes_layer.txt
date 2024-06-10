@@ -1,3 +1,0 @@
-Invert Selection of Shapes Layer|8
-shapes_tools
-QgsProcessingParameterFeatureSource|INPUT|Input|-1|None|False

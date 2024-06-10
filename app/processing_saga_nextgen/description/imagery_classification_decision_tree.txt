@@ -1,3 +1,0 @@
-Decision Tree|3
-imagery_classification
-QgsProcessingParameterRasterDestination|CLASSES|Decision Tree|None|False

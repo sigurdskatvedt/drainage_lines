@@ -1,4 +1,0 @@
-Grid Normalization|0
-grid_calculus
-QgsProcessingParameterRasterLayer|INPUT|Grid|None|False
-QgsProcessingParameterRasterDestination|OUTPUT|Normalized Grid|None|False

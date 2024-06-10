@@ -1,6 +1,6 @@
 # Drainage Channel Analysis Workflow Optimization
 
-This project evaluates and optimizes common drainage channel analysis workflows for Norwegian terrain using free and open-source Geographic Information Systems (GIS). Specifically, it uses QGIS and SAGA GIS within a Docker environment to assess and improve the accuracy and efficiency of current methodologies.
+This project evaluates and optimizes common drainage channel analysis workflows for Norwegian terrain using free and open-source Geographic Information Systems (GIS). Specifically, it uses QGIS, WhiteboxTools and SAGA GIS within a Docker environment to assess and improve the accuracy and efficiency of current methodologies.
 
 ## Project Overview
 
@@ -21,7 +21,7 @@ Before starting, ensure you have Docker and Docker Compose installed on your sys
 ## Installation and Setup
 
 ### Run Docker Container:
-Run the following command to start an Ubuntu-based Docker container with QGIS Python and SAGA GIS installed.
+Run the following command to start an Ubuntu-based Docker container with QGIS Python, WhiteboxTools and SAGA GIS installed.
 ```bash
 docker-compose up -d
 ```
